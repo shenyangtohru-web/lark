@@ -1,4 +1,4 @@
-module github.com/go-lark/lark
+module github.com/Davis1995/lark
 
 go 1.13
 

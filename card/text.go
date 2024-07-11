@@ -67,12 +67,14 @@ type MarkdownBlock struct {
 	content   string
 	textAlign string
 	href      map[string]*URLBlock
+	textSize  string
 }
 
 type markdownRenderer struct {
 	ElementTag
 	Content   string              `json:"content"`
 	TextAlign string              `json:"text_align,omitempty"`
+	TextSize  string              `json:"text_size, omitempty"`
 	Href      map[string]Renderer `json:"href,omitempty"`
 }
 
@@ -101,6 +103,21 @@ func (m *MarkdownBlock) AlignRight() *MarkdownBlock {
 	return m
 }
 
+func (m *MarkdownBlock) SetTextSizeNormal() *MarkdownBlock {
+	m.textSize = "normal"
+	return m
+}
+
+func (m *MarkdownBlock) SetTextSizeHeading() *MarkdownBlock {
+	m.textSize = "heading"
+	return m
+}
+
+func (m *MarkdownBlock) SetTextSizeNotation() *MarkdownBlock {
+	m.textSize = "notation"
+	return m
+}
+
 // Href 设置文本中 []($urlVal) 格式的链接值，仅在 LarkMd 和 Markdown 模块中可用
 func (m *MarkdownBlock) Href(name string, url *URLBlock) *MarkdownBlock {
 	if m.href == nil {
@@ -118,6 +135,7 @@ func (m *MarkdownBlock) Render() Renderer {
 		},
 		Content:   m.content,
 		TextAlign: m.textAlign,
+		TextSize:  m.textSize,
 	}
 	if len(m.href) > 0 {
 		ret.Href = make(map[string]Renderer, len(m.href))

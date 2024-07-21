@@ -16,7 +16,7 @@ type SelectBlock struct {
 	required       *bool
 	disabled       *bool
 	selectedValues []string
-	options        []SelectOptionBlock
+	options        []*SelectOptionBlock
 }
 
 type selectRenderer struct {
@@ -32,7 +32,7 @@ type selectRenderer struct {
 		Text  Renderer `json:"text,omitempty"`
 		Icon  Renderer `json:"icon,omitempty"`
 		Value string   `json:"value"`
-	} `json:"options"`
+	} `json:"options,omitempty"`
 }
 
 // Render 渲染为 Renderer
@@ -109,7 +109,7 @@ func (s *SelectBlock) SetDisabled() *SelectBlock {
 	return s
 }
 
-func (s *SelectBlock) SetOptions(ops []SelectOptionBlock) *SelectBlock {
+func (s *SelectBlock) SetOptions(ops []*SelectOptionBlock) *SelectBlock {
 	s.options = ops
 	return s
 }

@@ -1,6 +1,7 @@
 package card
 
 var _ Element = (*ImgBlock)(nil)
+var _ Element = (*IconBlock)(nil)
 
 // ImgBlock 图片元素
 type ImgBlock struct {
@@ -96,4 +97,34 @@ func (i *ImgBlock) CropCenter() *ImgBlock {
 func (i *ImgBlock) NoPreview() *ImgBlock {
 	i.noPreview = false
 	return i
+}
+
+type IconBlock struct {
+	tag    string
+	token  string
+	color  string
+	imgKey string
+}
+
+type iconRenderer struct {
+	ElementTag
+	Token  string `json:"token,omitempty"`
+	Color  string `json:"color,omitempty"`
+	ImgKey string `json:"img_key,omitempty"`
+}
+
+func (i *IconBlock) Render() Renderer {
+	ret := iconRenderer{
+		ElementTag: ElementTag{Tag: i.tag},
+	}
+	if i.token != "" {
+		ret.Token = i.token
+	}
+	if i.color != "" {
+		ret.Color = i.color
+	}
+	if i.imgKey != "" {
+		ret.ImgKey = i.imgKey
+	}
+	return ret
 }

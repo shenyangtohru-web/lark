@@ -2,7 +2,7 @@ package card
 
 var _ Element = (*SelectBlock)(nil)
 
-type SelectOption struct {
+type SelectOptionBlock struct {
 	text  *TextBlock
 	icon  *IconBlock
 	value string
@@ -16,7 +16,7 @@ type SelectBlock struct {
 	required       *bool
 	disabled       *bool
 	selectedValues []string
-	options        []SelectOption
+	options        []SelectOptionBlock
 }
 
 type selectRenderer struct {
@@ -109,7 +109,7 @@ func (s *SelectBlock) SetDisabled() *SelectBlock {
 	return s
 }
 
-func (s *SelectBlock) SetOptions(ops []SelectOption) *SelectBlock {
+func (s *SelectBlock) SetOptions(ops []SelectOptionBlock) *SelectBlock {
 	s.options = ops
 	return s
 }
@@ -118,4 +118,8 @@ func MultiSelectStatic(name string) *SelectBlock {
 	return &SelectBlock{
 		name: name,
 	}
+}
+
+func SelectOption(block *TextBlock, val string) *SelectOptionBlock {
+	return &SelectOptionBlock{text: block, value: val}
 }

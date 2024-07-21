@@ -63,13 +63,21 @@ func (s *SelectBlock) Render() Renderer {
 	}
 	if s.options != nil {
 		for _, op := range s.options {
+			var textRender Renderer
+			var iconRender Renderer
+			if op.text != nil {
+				textRender = op.text.Render()
+			}
+			if op.icon != nil {
+				iconRender = op.icon.Render()
+			}
 			op1 := struct {
 				Text  Renderer `json:"text,omitempty"`
 				Icon  Renderer `json:"icon,omitempty"`
 				Value string   `json:"value"`
 			}{
-				Text:  op.text.Render(),
-				Icon:  op.icon.Render(),
+				Text:  textRender,
+				Icon:  iconRender,
 				Value: op.value,
 			}
 			ret.Options = append(ret.Options, op1)

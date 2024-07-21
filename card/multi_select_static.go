@@ -79,30 +79,43 @@ func (s *SelectBlock) Render() Renderer {
 	return ret
 }
 
-func (s *SelectBlock) SetName(name string) {
+func (s *SelectBlock) SetName(name string) *SelectBlock {
 	s.name = name
+	return s
 }
 
-func (s *SelectBlock) SetTypeText() {
+func (s *SelectBlock) SetTypeText() *SelectBlock {
 	s.typeA1 = "text"
+	return s
 }
 
-func (s *SelectBlock) SetPlaceholder(text string) {
+func (s *SelectBlock) SetPlaceholder(text string) *SelectBlock {
 	s.placeholder = text
+	return s
 }
-func (s *SelectBlock) SetWidthFill() {
+func (s *SelectBlock) SetWidthFill() *SelectBlock {
 	s.width = "fill"
+	return s
 }
 
-func (s *SelectBlock) SetSelectedValues(vals []string) {
+func (s *SelectBlock) SetSelectedValues(vals []string) *SelectBlock {
 	s.selectedValues = vals
+	return s
 }
 
-func (s *SelectBlock) SetDisabled() {
+func (s *SelectBlock) SetDisabled() *SelectBlock {
 	disabled := true
 	s.disabled = &disabled
+	return s
 }
 
-func (s *SelectBlock) SetOptions(ops []SelectOption) {
+func (s *SelectBlock) SetOptions(ops []SelectOption) *SelectBlock {
 	s.options = ops
+	return s
+}
+
+func MultiSelectStatic(name string) *SelectBlock {
+	return &SelectBlock{
+		name: name,
+	}
 }

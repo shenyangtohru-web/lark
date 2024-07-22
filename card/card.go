@@ -7,8 +7,15 @@ import (
 
 var _ Element = (*Block)(nil)
 
+type toastRenderer struct {
+	TypeA1  string `json:"type"`
+	Content string `json:"content"`
+}
+
 // Block 卡片元素
 type Block struct {
+	toastType      string
+	toastContent   string
 	elements       []Element
 	disableForward bool
 	updateMulti    bool
@@ -40,6 +47,7 @@ type cardHeaderRenderer struct {
 }
 
 type cardRenderer struct {
+	Toast    *toastRenderer     `json:"toast,omitempty"`
 	Config   cardConfigRenderer `json:"config,omitempty"`
 	Header   cardHeaderRenderer `json:"header,omitempty"`
 	CardLink Renderer           `json:"card_link,omitempty"`
@@ -62,6 +70,12 @@ func (b *Block) Render() Renderer {
 	}
 	if b.links != nil {
 		ret.CardLink = b.links.Render()
+	}
+	if b.toastType != "" {
+		ret.Toast = &toastRenderer{
+			TypeA1:  b.toastType,
+			Content: b.toastContent,
+		}
 	}
 	return ret
 }
@@ -164,5 +178,12 @@ func (b *Block) Indigo() *Block {
 // Grey 设置卡片标题栏颜色（灰色）
 func (b *Block) Grey() *Block {
 	b.template = "grey"
+	return b
+}
+
+// SetToastSuccess 设置提示类型为成功
+func (b *Block) SetToastSuccess(text string) *Block {
+	b.toastType = "success"
+	b.toastContent = text
 	return b
 }

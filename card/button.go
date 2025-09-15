@@ -111,6 +111,11 @@ func (b *ButtonBlock) Danger() *ButtonBlock {
 	return b
 }
 
+func (b *ButtonBlock) Type(t string) *ButtonBlock {
+	b.btnType = t
+	return b
+}
+
 // Width 设置按钮宽度
 func (b *ButtonBlock) Width(w string) *ButtonBlock {
 	b.width = w

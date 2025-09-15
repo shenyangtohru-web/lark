@@ -4,22 +4,40 @@ var _ Element = (*ButtonBlock)(nil)
 
 // ButtonBlock 按钮元素
 type ButtonBlock struct {
-	text     *TextBlock
-	url      string
-	multiURL *URLBlock
-	btnType  string
-	value    map[string]interface{}
-	confirm  *ConfirmBlock
+	text      *TextBlock
+	url       string
+	multiURL  *URLBlock
+	btnType   string
+	value     map[string]interface{}
+	confirm   *ConfirmBlock
+	width     string
+	size      string
+	icon      *ButtonIcon
+	hoverTips *ButtonHoverTips
+}
+
+type ButtonIcon struct {
+	Tag   string `json:"tag,omitempty"`
+	Token string `json:"token,omitempty"`
+}
+
+type ButtonHoverTips struct {
+	Tag     string `json:"tag,omitempty"`
+	Content string `json:"content,omitempty"`
 }
 
 type buttonRenderer struct {
 	ElementTag
-	Text     Renderer               `json:"text"`
-	URL      string                 `json:"url,omitempty"`
-	MultiURL Renderer               `json:"multi_url,omitempty"`
-	Type     string                 `json:"type,omitempty"`
-	Value    map[string]interface{} `json:"value,omitempty"`
-	Confirm  Renderer               `json:"confirm,omitempty"`
+	Text      Renderer               `json:"text"`
+	URL       string                 `json:"url,omitempty"`
+	MultiURL  Renderer               `json:"multi_url,omitempty"`
+	Type      string                 `json:"type,omitempty"`
+	Value     map[string]interface{} `json:"value,omitempty"`
+	Confirm   Renderer               `json:"confirm,omitempty"`
+	Width     string                 `json:"width,omitempty"`
+	Size      string                 `json:"size,omitempty"`
+	Icon      *ButtonIcon            `json:"icon,omitempty"`
+	HoverTips *ButtonHoverTips       `json:"hover_tips,omitempty"`
 }
 
 // Render 渲染为 Renderer
@@ -28,10 +46,14 @@ func (b *ButtonBlock) Render() Renderer {
 		ElementTag: ElementTag{
 			Tag: "button",
 		},
-		Text:  b.text.Render(),
-		URL:   b.url,
-		Type:  b.btnType,
-		Value: b.value,
+		Text:      b.text.Render(),
+		URL:       b.url,
+		Type:      b.btnType,
+		Value:     b.value,
+		Width:     b.width,
+		Size:      b.size,
+		Icon:      b.icon,
+		HoverTips: b.hoverTips,
 	}
 	if b.multiURL != nil {
 		ret.MultiURL = b.multiURL.Render()
@@ -44,7 +66,7 @@ func (b *ButtonBlock) Render() Renderer {
 
 // Button 按钮交互元素
 func Button(text *TextBlock) *ButtonBlock {
-	return (&ButtonBlock{text: text}).Default()
+	return (&ButtonBlock{text: text}).Default().Width("default").Size("medium")
 }
 
 // URL 按钮的跳转链接
@@ -86,5 +108,35 @@ func (b *ButtonBlock) Primary() *ButtonBlock {
 // Danger 设置按钮样式（警示按钮）
 func (b *ButtonBlock) Danger() *ButtonBlock {
 	b.btnType = "danger"
+	return b
+}
+
+// Width 设置按钮宽度
+func (b *ButtonBlock) Width(w string) *ButtonBlock {
+	b.width = w
+	return b
+}
+
+// Size 设置按钮大小
+func (b *ButtonBlock) Size(s string) *ButtonBlock {
+	b.size = s
+	return b
+}
+
+// Icon 设置按钮图标
+func (b *ButtonBlock) Icon(tkn string) *ButtonBlock {
+	b.icon = &ButtonIcon{
+		Tag:   "standard_icon",
+		Token: tkn,
+	}
+	return b
+}
+
+// HoverTips 设置按钮悬停提示
+func (b *ButtonBlock) HoverTips(content string) *ButtonBlock {
+	b.hoverTips = &ButtonHoverTips{
+		Tag:     "plain_text",
+		Content: content,
+	}
 	return b
 }

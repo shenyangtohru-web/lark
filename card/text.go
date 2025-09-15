@@ -68,6 +68,7 @@ type MarkdownBlock struct {
 	textAlign string
 	href      map[string]*URLBlock
 	textSize  string
+	icon      *MarkdownIcon
 }
 
 type markdownRenderer struct {
@@ -76,6 +77,13 @@ type markdownRenderer struct {
 	TextAlign string              `json:"text_align,omitempty"`
 	TextSize  string              `json:"text_size, omitempty"`
 	Href      map[string]Renderer `json:"href,omitempty"`
+	Icon      *MarkdownIcon       `json:"icon,omitempty"`
+}
+
+type MarkdownIcon struct {
+	Tag   string `json:"tag,omitempty"`
+	Token string `json:"token,omitempty"`
+	Color string `json:"color,omitempty"`
 }
 
 // Markdown 单独使用的 Markdown 文本模块
@@ -127,6 +135,16 @@ func (m *MarkdownBlock) Href(name string, url *URLBlock) *MarkdownBlock {
 	return m
 }
 
+// Icon 设置 Markdown 图标
+func (m *MarkdownBlock) Icon(tkn, color string) *MarkdownBlock {
+	m.icon = &MarkdownIcon{
+		Tag:   "standard_icon",
+		Token: tkn,
+		Color: color,
+	}
+	return m
+}
+
 // Render 渲染为 Renderer
 func (m *MarkdownBlock) Render() Renderer {
 	ret := markdownRenderer{
@@ -136,6 +154,7 @@ func (m *MarkdownBlock) Render() Renderer {
 		Content:   m.content,
 		TextAlign: m.textAlign,
 		TextSize:  m.textSize,
+		Icon:      m.icon,
 	}
 	if len(m.href) > 0 {
 		ret.Href = make(map[string]Renderer, len(m.href))

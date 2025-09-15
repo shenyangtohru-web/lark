@@ -1,4 +1,4 @@
-module github.com/Davis1995/lark
+module github.com/shenyangtohru-web/lark
 
 go 1.13
 
